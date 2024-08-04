@@ -21,13 +21,22 @@ function Login(){
     const dispatch = useDispatch();
     const navigate = useNavigate();
     
-    const handleChangeLogIn = () => {
+    const handleChangeLogIn = async () => {
         const validated = validateInputs()
-        console.log(validated)
         if(validated){
             setShowErrorMessage(false)
-            //login request
-            if(true){//successful login
+            const response = await fetch("http://localhost:5000/login",{
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                },
+                method:"POST",
+                body:JSON.stringify({
+                    username:username,
+                    password:password
+                })
+            })
+            console.log(response)
+            if(response){
                 dispatch(setState({authenticated:true,token:"requestToken",username:username}))
                 navigate('/')
             }
