@@ -1,0 +1,17 @@
+#footer{
+    position: relative;
+    display: flex;
+    bottom: 0;
+    padding: 3px;
+    margin-top: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+#iconContainer{
+    margin: 4px;
+    background-color: white;
+    height: 50px;
+    width: 50px;
+    border-radius: 10px;
+}

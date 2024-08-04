@@ -1,0 +1,11 @@
+
+#innerContainer{
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    height: 1000px;
+    flex:1
+}
+

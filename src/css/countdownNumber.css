@@ -1,0 +1,21 @@
+#countdownOuterContainer{
+    flex-direction: column;
+    width: 70px;
+    background-color: white;
+    margin: 10px;
+    padding: 4px;
+    justify-content: center;
+    text-align: center;
+    border-radius: 5px
+}
+
+#number{
+    border-bottom: solid;
+    border-width: 1px;
+    border-color: black;
+    font-size: x-large;
+}
+
+#text{
+    font-size: smaller;
+}
