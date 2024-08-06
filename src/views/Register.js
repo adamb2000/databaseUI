@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { authReducer } from "../state/AuthReducer";
 import { useNavigate } from "react-router-dom";
+import { registerAccount } from "../API/AxiosConfig";
 const {selectAuthenticated, selectToken, selectState, selectUsername} = authReducer.getSelectors();
 const {setState, setValue} = authReducer.actions;
 
@@ -19,28 +20,24 @@ export default function Register(){
     const [passwordValidation, setPasswordValidation] = useState(true);
     const [errorMessage, setErrorMessage] = useState("");
     const [showErrorMessage, setShowErrorMessage] = useState();
-    const [register, setRegister] = useState(false)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     
     const handleRegister = async () => {
         const validated = validateInputs()
         if(validated){
-            const response = await fetch("http://localhost:5000/register",{
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8"
-                },
-                method:"POST",
-                body:JSON.stringify({
-                    username:username,
-                    password:password
-                })
-            })
+            const response = await registerAccount(username,password)
             console.log(response)
-            if(response){
+            if(!response.error){
+                setShowErrorMessage(false)
                 dispatch(setState({authenticated:true,token:"requestToken",username:username}))
                 navigate('/')
+            } else {
+                setErrorMessage(response.response.response.data.message)
+                setShowErrorMessage(true);
             }
+            
+            
         }
         console.log(validated)
     }

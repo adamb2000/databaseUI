@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { authReducer } from "../state/AuthReducer";
 import { useNavigate, Link } from "react-router-dom";
+import { loginAccount } from "../API/AxiosConfig";
 const {selectAuthenticated, selectToken, selectState, selectUsername} = authReducer.getSelectors();
 const {setState, setValue} = authReducer.actions;
 
@@ -18,7 +19,6 @@ function Login(){
     const [passwordValidation, setPasswordValidation] = useState(true);
     const [errorMessage, setErrorMessage] = useState("");
     const [showErrorMessage, setShowErrorMessage] = useState();
-    const [register, setRegister] = useState(false)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     
@@ -26,20 +26,14 @@ function Login(){
         const validated = validateInputs()
         if(validated){
             setShowErrorMessage(false)
-            const response = await fetch("http://localhost:5000/login",{
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8"
-                },
-                method:"POST",
-                body:JSON.stringify({
-                    username:username,
-                    password:password
-                })
-            })
+            const response = await loginAccount(username,password)
             console.log(response)
-            if(response){
-                dispatch(setState({authenticated:true,token:"requestToken",username:username}))
+            if(!response.error){
+                dispatch(setState({authenticated:true,username:"username"}))
                 navigate('/')
+            } else {
+                setErrorMessage(response.errorMessage)
+                setShowErrorMessage(true)
             }
         } else {
             setErrorMessage("Username and Password must not be empty")
