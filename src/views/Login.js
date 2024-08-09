@@ -8,8 +8,7 @@ import Typography from '@mui/material/Typography';
 import { authReducer } from "../state/AuthReducer";
 import { useNavigate, Link } from "react-router-dom";
 import { loginAccount } from "../API/AxiosConfig";
-const {selectAuthenticated, selectToken, selectState, selectUsername} = authReducer.getSelectors();
-const {setState, setValue} = authReducer.actions;
+const {setState} = authReducer.actions;
 
 
 function Login(){
@@ -27,9 +26,8 @@ function Login(){
         if(validated){
             setShowErrorMessage(false)
             const response = await loginAccount(username,password)
-            console.log(response)
             if(!response.error){
-                dispatch(setState({authenticated:true,username:"username"}))
+                dispatch(setState({authenticated:true,username:"username",roles:response.data.roles}))
                 navigate('/')
             } else {
                 setErrorMessage(response.errorMessage)

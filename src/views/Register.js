@@ -20,7 +20,6 @@ export default function Register(){
     const [passwordValidation, setPasswordValidation] = useState(true);
     const [errorMessage, setErrorMessage] = useState("");
     const [showErrorMessage, setShowErrorMessage] = useState();
-    const dispatch = useDispatch();
     const navigate = useNavigate();
     
     const handleRegister = async () => {
@@ -30,14 +29,11 @@ export default function Register(){
             console.log(response)
             if(!response.error){
                 setShowErrorMessage(false)
-                dispatch(setState({authenticated:true,token:"requestToken",username:username}))
-                navigate('/')
+                navigate('/login')
             } else {
-                setErrorMessage(response.response.response.data.message)
+                setErrorMessage(response.errorMessage)
                 setShowErrorMessage(true);
             }
-            
-            
         }
         console.log(validated)
     }

@@ -28,9 +28,7 @@ export const loginAccount = async (username, password) => {
     })
     try{
         const response = await API.post('/login',data)
-        const setCookieHeader = response.headers['set-cookie'];
-        console.log(setCookieHeader)
-        return {error:false,response:response}
+        return {error:false,data:response.data}
     } catch(err){
         return handleApiError(err)
     }  

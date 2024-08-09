@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const authReducer = createSlice({
     name: 'auth',
-    initialState: {authenticated: false, username:"" },
+    initialState: {authenticated: false, username:"",roles:[] },
     reducers: {
         setState: (state,{payload}) => {return payload},
         setValue: (state,{payload}) => {state[payload.field] = payload.val; return state}
@@ -11,6 +11,7 @@ const authReducer = createSlice({
         selectState: (state) => state.auth,
         selectAuthenticated: (state) => state.auth.authenticated,
         selectUsername: (state) => state.auth.username,
+        selectRoles: (state) => state.auth.roles,
     }
 })
 
