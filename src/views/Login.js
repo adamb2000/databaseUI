@@ -27,7 +27,7 @@ function Login(){
             setShowErrorMessage(false)
             const response = await loginAccount(username,password)
             if(!response.error){
-                dispatch(setState({authenticated:true,username:"username",roles:response.data.roles}))
+                dispatch(setState({authenticated:true,username:response.data.username,roles:response.data.roles}))
                 navigate('/')
             } else {
                 setErrorMessage(response.errorMessage)

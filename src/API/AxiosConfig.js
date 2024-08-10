@@ -46,6 +46,16 @@ export const signOut = async (username) => {
     }  
 }
 
+export const getUserSettings = async () => {
+    try{
+        const response = await API.get('/userSettings')
+        console.log(response.data)
+        return {error:false,data:response.data}
+    } catch(err){
+        return handleApiError(err)
+    }  
+}
+
 const handleApiError = (err) => {
     console.log(err)
     return {error:true, errorMessage:err.response.data.message, status:err.response.status}
