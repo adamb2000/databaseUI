@@ -3,9 +3,7 @@ import './appLayout.css'
 import Footer from "./components/Footer";
 import Header from './components/Header'
 
-
 function AppLayout({children}){
-    
     return (
         <div id='appContainer'>
             <Header/>

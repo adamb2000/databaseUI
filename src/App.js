@@ -1,5 +1,5 @@
-import React from "react";
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+import React, {useEffect, useState} from "react";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import HomePage from "./views/HomePage";
 import Login from './views/Login'
@@ -7,6 +7,8 @@ import ErrorPage from "./views/ErrorPage";
 import Register from './views/Register'
 import UserSettings from "./views/UserSettings";
 import {Route, BrowserRouter, Routes} from "react-router-dom";
+import { getUserDetails } from "./API/AxiosConfig";
+
 
 const theme = createTheme({
   palette: {
@@ -20,7 +22,25 @@ const theme = createTheme({
 });
 
 export default function App() {
-  
+  const [authenticated, setAuthenticated] = useState(false)
+  const userDetails = JSON.parse(localStorage.getItem('userDetails'))
+
+  const checkLogin = async () => {
+    const response = await getUserDetails()
+    if(!response.error){
+      localStorage.setItem('userDetails', JSON.stringify(response.data))
+      setAuthenticated(true);
+    } else {
+      localStorage.removeItem('userDetails')
+    }
+  }
+
+  useEffect(() => {
+    if(!authenticated && userDetails){
+      checkLogin()
+    }
+  },[])
+
   return (
     <ThemeProvider theme={theme}>
         <BrowserRouter>

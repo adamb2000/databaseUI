@@ -1,18 +1,27 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import '../css/homePage.css'
 import AppLayout from "../AppLayout";
-import { useSelector } from "react-redux";
 import { Typography } from "@mui/material";
 
 function HomePage(){
-    const auth = useSelector(state => state.auth)
-    
-    if(auth.authenticated){
+    const userDetails = JSON.parse(localStorage.getItem('userDetails'))
+    const [auth, setAuth] = useState(false)
+
+    useEffect(() => {
+        
+        if(userDetails){
+            setAuth(true)
+        } else {
+            setAuth(false)
+        }
+      },[userDetails])
+   
+    if(auth){
         return (
             <AppLayout>
             <div id="outerContainer">
-                <Typography>Hello and welcome to mongoUI you are logged in with account: {auth.username}</Typography>
-                <Typography>You have the roles of: {auth.roles}</Typography>
+                <Typography>Hello and welcome to mongoUI you are logged in with account: {userDetails.username}</Typography>
+                <Typography>You have the roles of: {userDetails.roles}</Typography>
             </div>   
             
             </AppLayout>  

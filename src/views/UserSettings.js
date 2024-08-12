@@ -1,30 +1,55 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import '../css/homePage.css'
 import AppLayout from "../AppLayout";
-import { useSelector } from "react-redux";
-import { Typography } from "@mui/material";
-import { getUserSettings } from "../API/AxiosConfig";
+import { getUserSettings, updateUserSettigns } from "../API/AxiosConfig";
+import { Box, Button, Divider, ToggleButton, ToggleButtonGroup, Stack } from "@mui/material";
 
 function UserSettings(){
-    const auth = useSelector(state => state.auth)
+    const userDetails = JSON.parse(localStorage.getItem('userDetails'));
+    const [tempUserDetails, setTempUserDetails] = useState()
+
     useEffect(() => {
         const api = async () => {
             const response = await getUserSettings();
-            console.log(response.data)
+            setTempUserDetails(response.data)
         }
         api()
     },[])
-    
-    if(auth.authenticated){
+
+    const handleChange = (change) => {
+        setTempUserDetails((state) => {
+            const newState = {...state}
+            newState[change.key] = change.value
+            return newState
+        })
+    }
+
+    const submitChanges = async () => {
+        const response = updateUserSettigns(tempUserDetails); 
+        console.log(response)
+    }
+
+    const updatePassword = () => {
+        console.log("update password")
+    }
+
+    if(tempUserDetails){
         return (
             <AppLayout>
-            <div id="outerContainer">
-                <Typography>USER SETTINGS</Typography>
-                <Typography>You have the roles of: {auth.roles}</Typography>
-            </div>   
-            
+                <Box>
+                    <Stack spacing={2}>
+                        <ToggleButtonGroup color="primary" value={tempUserDetails.appearance} exclusive onChange={(e,n) => {n && handleChange({key:'appearance',value:n});}} aria-label="Platform" >
+                            <ToggleButton value="light">Light</ToggleButton>
+                            <ToggleButton value="dark">Dark</ToggleButton>
+                        </ToggleButtonGroup>
+                        <Button onClick={() => submitChanges()}>Submit</Button>
+                        
+                        <Divider/>
+                        <Button onClick={() => updatePassword()}>Update Password</Button>
+                    </Stack>
+                </Box>
             </AppLayout>  
-    )
+        )
     } else {
         return (
                 <AppLayout>

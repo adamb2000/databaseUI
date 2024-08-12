@@ -1,15 +1,9 @@
 import React, {useState} from "react";
-import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
 import AppLayout from "../AppLayout";
-import { useDispatch, useSelector } from "react-redux";
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { authReducer } from "../state/AuthReducer";
+import {Typography, Button, Stack, TextField} from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import { registerAccount } from "../API/AxiosConfig";
-const {selectAuthenticated, selectToken, selectState, selectUsername} = authReducer.getSelectors();
-const {setState, setValue} = authReducer.actions;
+
 
 
 export default function Register(){
@@ -21,6 +15,8 @@ export default function Register(){
     const [errorMessage, setErrorMessage] = useState("");
     const [showErrorMessage, setShowErrorMessage] = useState();
     const navigate = useNavigate();
+
+   
     
     const handleRegister = async () => {
         const validated = validateInputs()

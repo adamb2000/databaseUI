@@ -9,12 +9,9 @@ import Store from './state/Store';
 
 
 createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <Provider store={Store}>
-      
-      <App/>
-      
-    </Provider>
-  </React.StrictMode>
+  <Provider store={Store}>
+    <App/>
+  </Provider>
+
 );
 

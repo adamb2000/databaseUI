@@ -1,14 +1,8 @@
 import React, {useState} from "react";
-import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
+import {TextField,Stack,Button,Typography} from '@mui/material';
 import AppLayout from "../AppLayout";
-import { useDispatch, useSelector } from "react-redux";
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { authReducer } from "../state/AuthReducer";
 import { useNavigate, Link } from "react-router-dom";
 import { loginAccount } from "../API/AxiosConfig";
-const {setState} = authReducer.actions;
 
 
 function Login(){
@@ -18,8 +12,8 @@ function Login(){
     const [passwordValidation, setPasswordValidation] = useState(true);
     const [errorMessage, setErrorMessage] = useState("");
     const [showErrorMessage, setShowErrorMessage] = useState();
-    const dispatch = useDispatch();
     const navigate = useNavigate();
+    
     
     const handleChangeLogIn = async () => {
         const validated = validateInputs()
@@ -27,7 +21,7 @@ function Login(){
             setShowErrorMessage(false)
             const response = await loginAccount(username,password)
             if(!response.error){
-                dispatch(setState({authenticated:true,username:response.data.username,roles:response.data.roles}))
+                localStorage.setItem('userDetails',JSON.stringify({id:response.data.id,username:response.data.username,roles:response.data.roles,settings:""}))
                 navigate('/')
             } else {
                 setErrorMessage(response.errorMessage)

@@ -28,6 +28,7 @@ export const loginAccount = async (username, password) => {
     })
     try{
         const response = await API.post('/login',data)
+        console.log(response)
         return {error:false,data:response.data}
     } catch(err){
         return handleApiError(err)
@@ -49,14 +50,43 @@ export const signOut = async (username) => {
 export const getUserSettings = async () => {
     try{
         const response = await API.get('/userSettings')
-        console.log(response.data)
         return {error:false,data:response.data}
     } catch(err){
         return handleApiError(err)
     }  
 }
 
+export const getUserDetails = async () => {
+    try{
+        const response = await API.get('/userDetails')
+        return {error:false,data:response.data}
+    } catch(err){
+        return handleApiError(err)
+    }  
+}
+
+export const updateUserSettigns = async (userSettings) => {
+    try{
+        const data = JSON.stringify({
+            userSettings:userSettings,
+        })
+        const response = await API.put('/userSettings',data)
+        return {error:false,data:response.data}
+    } catch(err){
+        return handleApiError(err)
+    }  
+}
+
+
+
 const handleApiError = (err) => {
-    console.log(err)
-    return {error:true, errorMessage:err.response.data.message, status:err.response.status}
+    
+    if(err.response){
+        return {error:err.response.status, errorMessage:err.response.data.message}
+    } else if(err.request){
+        return {error:true, errorMessage:"err.response.data.message"}
+    } else {
+        return {error:err.response.status, errorMessage:err.response.data.message}
+    }
+    
 }
