@@ -4,7 +4,6 @@ import { blue } from '@mui/material/colors';
 import HomePage from "./views/HomePage";
 import Login from './views/Login'
 import ErrorPage from "./views/ErrorPage";
-import Register from './views/Register'
 import UserSettings from "./views/UserSettings";
 import {Route, BrowserRouter, Routes} from "react-router-dom";
 import { getUserDetails } from "./API/AxiosConfig";
@@ -12,11 +11,17 @@ import { getUserDetails } from "./API/AxiosConfig";
 
 const theme = createTheme({
   palette: {
-    primary: {
-      main: blue[700],
-    },
-    secondary: {
-      main: blue[700]
+    primary: {main: blue[700],},
+    secondary: { main: blue[100] },
+    error: { main: "#E13232" },
+    warning: { main: "#FFB100" },
+    info: { main: "#8BC34A" },
+    components : {
+      box: {
+        palette: {
+          primary: {main: blue[700],},
+        }
+      }
     }
   },
 });
@@ -48,7 +53,6 @@ export default function App() {
               <Route path="/*" element={<ErrorPage/>} />
               <Route path="/" element={<HomePage/>} />
               <Route path="/login" element={<Login/>} />
-              <Route path="/register" element={<Register/>} />
               <Route path="/userSettings" element={<UserSettings/>} />
             </Routes>
         </BrowserRouter>

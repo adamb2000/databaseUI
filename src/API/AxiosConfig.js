@@ -77,6 +77,20 @@ export const updateUserSettigns = async (userSettings) => {
     }  
 }
 
+export const updatePassword = async (id, oldPassword,newPassword) => {
+    try{
+        const data = JSON.stringify({
+            id:id,
+            oldPassword:oldPassword,
+            newPassword:newPassword
+        })
+        const response = await API.put('/updatePassword',data)
+        return {error:false,data:response.data}
+    } catch(err){
+        return handleApiError(err)
+    }  
+}
+
 
 
 const handleApiError = (err) => {
