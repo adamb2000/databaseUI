@@ -6,8 +6,11 @@ import Login from './views/Login'
 import ErrorPage from "./views/ErrorPage";
 import UserSettings from "./views/UserSettings";
 import {Route, BrowserRouter, Routes} from "react-router-dom";
-import { getUserDetails } from "./API/AxiosConfig";
-
+import { getUserDetails } from "./API/apiGet";
+import { useDispatch, useSelector } from "react-redux";
+import { userDetailsReducer } from "./state/userDetailsReducer";
+const {setState} = userDetailsReducer.actions
+const {selectId} = userDetailsReducer.getSelectors()
 
 const theme = createTheme({
   palette: {
@@ -27,24 +30,38 @@ const theme = createTheme({
 });
 
 export default function App() {
-  const [authenticated, setAuthenticated] = useState(false)
-  const userDetails = JSON.parse(localStorage.getItem('userDetails'))
+  const auth = !!useSelector(selectId)
+  const dispatch = useDispatch()
+  const validateLocalStorage = (val) => {
+    try{
+      if(val && val !== 'undefined'){
+        return JSON.parse(val)
+      } else {
+        return null
+      }
+    } catch {
+      return null
+    }
+  }
+  const userDetails = validateLocalStorage(localStorage.getItem('userDetails'))
 
   const checkLogin = async () => {
-    const response = await getUserDetails()
-    if(!response.error){
+    const response = await getUserDetails(false)
+    console.log(response)
+    if(response.status === 200){
       localStorage.setItem('userDetails', JSON.stringify(response.data))
-      setAuthenticated(true);
+      dispatch(setState({id:userDetails.id,username:userDetails.username,roles:userDetails.roles,settings:""}))
     } else {
       localStorage.removeItem('userDetails')
+      dispatch(setState({id:null,username:null,roles:null,settings:null}))
     }
   }
 
   useEffect(() => {
-    if(!authenticated && userDetails){
+    if(!auth && userDetails){
       checkLogin()
     }
-  },[])
+  },[userDetails])
 
   return (
     <ThemeProvider theme={theme}>

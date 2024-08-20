@@ -2,22 +2,27 @@ import React, {Fragment, useState} from "react";
 import '../css/header.css'
 import {ListItemText,ListItemButton,ListItem,Divider,Drawer,List,Box,IconButton,Typography,Toolbar,AppBar} from '@mui/material';
 import { useNavigate } from "react-router-dom";
-import { signOut } from "../API/AxiosConfig";
+import { signOut } from "../API/apiPost";
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
-
+import { useDispatch, useSelector } from "react-redux";
+import { userDetailsReducer } from "../state/userDetailsReducer";
+const {selectState} = userDetailsReducer.getSelectors()
+const {setState} = userDetailsReducer.actions
 const packageJson = require("../../package.json")
 
 
 export default function Header(){
     const navigate = useNavigate();
-    const userDetails = JSON.parse(localStorage.getItem('userDetails'));
+    const userDetails = useSelector(selectState)
     const [open, setOpen] = useState(false);
+    const dispatch = useDispatch()
     
     const handleSignIn = () => {
-      if(userDetails){
+      if(userDetails.id){
         const response = signOut(userDetails.username)
         if(!response.errr){
           localStorage.removeItem('userDetails')
+          dispatch(setState({id:null,username:null,roles:null,settings:null}))
           navigate('/')
         }
       } else {
@@ -41,7 +46,7 @@ export default function Header(){
       const homePageButton = {text:'Homepage',icon:false,onClick:()=>{navigate('/')}}
       const buttons = []
 
-      if(userDetails){
+      if(userDetails.id){
         buttons.push(getButton(homePageButton))
         buttons.push(getButton(userSettingsButton))
       }
@@ -65,7 +70,7 @@ export default function Header(){
                 {getAllButtons()}
               </List>
               <Divider/>
-              {getButton({text:userDetails ? 'SIGN OUT' : 'SIGN IN',icon:false,onClick:()=>{handleSignIn()}})}
+              {getButton({text:userDetails.id ? 'SIGN OUT' : 'SIGN IN',icon:false,onClick:()=>{handleSignIn()}})}
             </Box>
           </Drawer>
         </Toolbar>

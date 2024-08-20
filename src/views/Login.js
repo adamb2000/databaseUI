@@ -2,7 +2,10 @@ import React, {useState} from "react";
 import {TextField,Stack,Button,Typography} from '@mui/material';
 import AppLayout from "../AppLayout";
 import { useNavigate } from "react-router-dom";
-import { loginAccount, registerAccount } from "../API/AxiosConfig";
+import { loginAccount, registerAccount } from "../API/apiPost"
+import { userDetailsReducer } from "../state/userDetailsReducer";
+import { useDispatch } from "react-redux";
+const {setState} = userDetailsReducer.actions
 
 function Login(){
     const [username, setUsername] = useState("")
@@ -14,6 +17,7 @@ function Login(){
     const [showErrorMessage, setShowErrorMessage] = useState();
     const [register, setRegister] = useState(false)
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     
     const handleLogin = async () => {
         const validated = validateInputs()
@@ -21,6 +25,8 @@ function Login(){
             setShowErrorMessage(false)
             const response = await loginAccount(username,password)
             if(!response.error){
+                console.log(response)
+                dispatch(setState({id:response.data.id,username:response.data.username,roles:response.data.roles,settings:""}))
                 localStorage.setItem('userDetails',JSON.stringify({id:response.data.id,username:response.data.username,roles:response.data.roles,settings:""}))
                 navigate('/')
             } else {

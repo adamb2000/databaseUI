@@ -1,8 +1,13 @@
 import React, {useEffect, useState} from "react";
 import '../css/homePage.css'
 import AppLayout from "../AppLayout";
-import { getUserSettings, updatePassword, updateUserSettigns } from "../API/AxiosConfig";
+import { useSelector } from "react-redux";
+import { getUserSettings } from "../API/apiGet";
+import { updatePassword, updateUserSettigns } from "../API/apiPut";
 import { Box, Button, Divider, ToggleButton, ToggleButtonGroup, Stack, TextField, Typography } from "@mui/material";
+import { errorMessaegReducer } from "../state/errorMessageReducer";
+const {selectState} = errorMessaegReducer.getSelectors()
+
 
 function UserSettings(){
     const userDetails = JSON.parse(localStorage.getItem('userDetails'));
@@ -14,6 +19,8 @@ function UserSettings(){
     const [errorMessage, setErrorMessage] = useState("");
     const [showErrorMessage, setShowErrorMessage] = useState();
 
+    const t = useSelector(selectState)
+    console.log(t)
     useEffect(() => {
         const api = async () => {
             const response = await getUserSettings();
@@ -51,7 +58,7 @@ function UserSettings(){
     }
 
     const submitChanges = async () => {
-        const response = updateUserSettigns(tempUserDetails); 
+        const response = await  updateUserSettigns(tempUserDetails); 
         console.log(response)
     }
 

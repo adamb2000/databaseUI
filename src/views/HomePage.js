@@ -2,14 +2,17 @@ import React, {useEffect, useState} from "react";
 import '../css/homePage.css'
 import AppLayout from "../AppLayout";
 import { Typography } from "@mui/material";
+import { userDetailsReducer } from "../state/userDetailsReducer";
+import { useSelector } from "react-redux";
+const {selectState} = userDetailsReducer.getSelectors()
 
 function HomePage(){
-    const userDetails = JSON.parse(localStorage.getItem('userDetails'))
+    const userDetails = useSelector(selectState)
     const [auth, setAuth] = useState(false)
 
     useEffect(() => {
         
-        if(userDetails){
+        if(userDetails.id){
             setAuth(true)
         } else {
             setAuth(false)
