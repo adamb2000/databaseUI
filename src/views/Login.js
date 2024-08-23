@@ -24,15 +24,12 @@ function Login(){
         if(validated){
             setShowErrorMessage(false)
             const response = await loginAccount(username,password)
-            if(!response.error){
+            if(response.status === 200){
                 console.log(response)
                 dispatch(setState({id:response.data.id,username:response.data.username,roles:response.data.roles,settings:""}))
                 localStorage.setItem('userDetails',JSON.stringify({id:response.data.id,username:response.data.username,roles:response.data.roles,settings:""}))
                 navigate('/')
-            } else {
-                setErrorMessage(response.errorMessage)
-                setShowErrorMessage(true)
-            }
+            } 
         } else {
             setErrorMessage("Username and Password must not be empty")
             setShowErrorMessage(true)

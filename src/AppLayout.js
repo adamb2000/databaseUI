@@ -13,10 +13,13 @@ function AppLayout({children}){
         <div id='appContainer'>
             <Header/>
             {errors.showMessage && <Alert variant="filled" severity="error">{errors.errorMessage}</Alert>}
-            <Box  sx={{flexGrow:1}}>
-            {children}
-            <Footer/>   
+            <Box sx={{padding:'20px',flexGrow:1, backgroundColor:'blue'}}>
+                <Box sx={{justifyContent:'center', alignItems:'flexEnd'}}>
+                    {children}
+                </Box>
             </Box>
+            <Footer/>   
+            
         </div>
     )
 }

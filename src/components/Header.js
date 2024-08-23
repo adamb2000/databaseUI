@@ -44,11 +44,15 @@ export default function Header(){
 
       const userSettingsButton = {text:"Settings",icon:false,onClick:()=>{navigate('/userSettings')}}
       const homePageButton = {text:'Homepage',icon:false,onClick:()=>{navigate('/')}}
+      const adminSettingsButton = {text:'Admin Settings',icon:false,onClick:()=>{navigate('/adminSettings')}}
       const buttons = []
 
       if(userDetails.id){
         buttons.push(getButton(homePageButton))
         buttons.push(getButton(userSettingsButton))
+      }
+      if(userDetails.roles?.includes('ADMIN')){
+        buttons.push(getButton(adminSettingsButton))
       }
       
      

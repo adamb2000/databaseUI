@@ -18,3 +18,14 @@ export const getUserDetails = async (showError=true) => {
         return responseHandler(err,showError)
     }  
 }
+
+
+export const getAdminSettings = async (showError=true) => {
+    try{
+        const response = await API.get('/adminSettings')
+        return responseHandler(response,showError)
+    } catch(err){
+        return responseHandler(err,showError)
+    }  
+}
+

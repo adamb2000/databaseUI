@@ -5,13 +5,13 @@ import { useSelector } from "react-redux";
 import { getUserSettings } from "../API/apiGet";
 import { updatePassword, updateUserSettigns } from "../API/apiPut";
 import { Box, Button, Divider, ToggleButton, ToggleButtonGroup, Stack, TextField, Typography } from "@mui/material";
-import { errorMessaegReducer } from "../state/errorMessageReducer";
-const {selectState} = errorMessaegReducer.getSelectors()
+import { userDetailsReducer } from "../state/userDetailsReducer";
+const {selectState}  = userDetailsReducer.getSelectors()
 
 
 function UserSettings(){
-    const userDetails = JSON.parse(localStorage.getItem('userDetails'));
-    const [tempUserDetails, setTempUserDetails] = useState()
+    const userDetails = useSelector(selectState)
+    const [tempUserSettings, setTempUserSettings] = useState()
     const [currentPassword, setCurrentPassword] = useState("")
     const [password, setPassword] = useState("")
     const [repeatPassword, setRepeatPassword] = useState("")
@@ -19,18 +19,16 @@ function UserSettings(){
     const [errorMessage, setErrorMessage] = useState("");
     const [showErrorMessage, setShowErrorMessage] = useState();
 
-    const t = useSelector(selectState)
-    console.log(t)
     useEffect(() => {
         const api = async () => {
             const response = await getUserSettings();
-            setTempUserDetails(response.data)
+            setTempUserSettings(response.data)
         }
         api()
     },[])
 
     const handleChange = (change) => {
-        setTempUserDetails((state) => {
+        setTempUserSettings((state) => {
             const newState = {...state}
             newState[change.key] = change.value
             return newState
@@ -45,8 +43,6 @@ function UserSettings(){
             setErrorMessage("Passwords must not be empty");
             return false
         }
-        console.log(password)
-        console.log(repeatPassword)
         if(password !== repeatPassword){
             setShowErrorMessage(true)
             setPasswordValidation(false)
@@ -58,7 +54,7 @@ function UserSettings(){
     }
 
     const submitChanges = async () => {
-        const response = await  updateUserSettigns(tempUserDetails); 
+        const response = await  updateUserSettigns(tempUserSettings); 
         console.log(response)
     }
 
@@ -70,12 +66,12 @@ function UserSettings(){
         console.log("update password")
     }
 
-    if(tempUserDetails){
+    if(tempUserSettings){
         return (
             <AppLayout>
                 <Box>
                     <Stack spacing={2}>
-                        <ToggleButtonGroup color="primary" value={tempUserDetails.appearance} exclusive onChange={(e,n) => {n && handleChange({key:'appearance',value:n});}} aria-label="Platform" >
+                        <ToggleButtonGroup color="primary" value={tempUserSettings.appearance} exclusive onChange={(e,n) => {n && handleChange({key:'appearance',value:n});}} aria-label="Platform" >
                             <ToggleButton value="light">Light</ToggleButton>
                             <ToggleButton value="dark">Dark</ToggleButton>
                         </ToggleButtonGroup>

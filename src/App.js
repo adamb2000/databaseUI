@@ -5,6 +5,7 @@ import HomePage from "./views/HomePage";
 import Login from './views/Login'
 import ErrorPage from "./views/ErrorPage";
 import UserSettings from "./views/UserSettings";
+import AdminSettings from "./views/AdminSettings";
 import {Route, BrowserRouter, Routes} from "react-router-dom";
 import { getUserDetails } from "./API/apiGet";
 import { useDispatch, useSelector } from "react-redux";
@@ -70,6 +71,7 @@ export default function App() {
               <Route path="/*" element={<ErrorPage/>} />
               <Route path="/" element={<HomePage/>} />
               <Route path="/login" element={<Login/>} />
+              <Route path="/adminSettings" element={<AdminSettings/>} />
               <Route path="/userSettings" element={<UserSettings/>} />
             </Routes>
         </BrowserRouter>

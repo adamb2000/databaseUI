@@ -22,19 +22,19 @@ function HomePage(){
     if(auth){
         return (
             <AppLayout>
-            <div id="outerContainer">
-                <Typography>Hello and welcome to mongoUI you are logged in with account: {userDetails.username}</Typography>
+            
+                <Typography sx={{width:'100px'}}>Hello and welcome to mongoUI you are logged in with account: {userDetails.username}</Typography>
                 <Typography>You have the roles of: {userDetails.roles}</Typography>
-            </div>   
+             
             
             </AppLayout>  
     )
     } else {
         return (
                 <AppLayout>
-                <div id="outerContainer">
-                    Hello and welcome to mongoUI, you'll need to login
-                </div>   
+                
+                <Typography sx={{width:'100px'}}>Hello and welcome to mongoUI, you'll need to login</Typography>
+                 
                 </AppLayout>  
         )
     }
